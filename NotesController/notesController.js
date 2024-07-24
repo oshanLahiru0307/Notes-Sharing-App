@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const router = express.Router()
 const Note = require('../models/notesModel')
 const mongoos = require('mongoose')
 
@@ -18,7 +19,7 @@ const addNote = async(req,res) => {
 
 //get all Notes request...
 const getAllNotes = async(req, res) => {
-    const notes = await Notes.find({}).sort({createdAt: -1})   
+    const notes = await Note.find({}).sort({createdAt: -1})   
     if(!notes){
         res.status(404).json({mssg: "there is not any note"})
     }
