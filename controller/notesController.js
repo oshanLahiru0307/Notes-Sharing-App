@@ -1,6 +1,4 @@
 const express = require('express')
-const app = express()
-const router = express.Router()
 const Note = require('../models/notesModel')
 const mongoos = require('mongoose')
 
@@ -58,7 +56,7 @@ const updateNote = async(req, res) => {
     if(!mongoos.Types.ObjectId.isValid(id)){
         res.status(404).json({mssg: "there is not such a note"})
     }
-    const note = await Note.findByIdAndUpdate({_id:id},{...req.body})
+    const note = await Note.findOneAndUpdate({_id: id},{...req.body})
 
     if(!note){
         res.status(400).json({mssg:"there is not such a note"})
