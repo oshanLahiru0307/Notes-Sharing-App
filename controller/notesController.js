@@ -9,9 +9,9 @@ const addNote = async(req,res) => {
     const{title, content} = req.body
     try{
         const note = await Note.create({title, content})
-        res.status(200).json(note)
+        return res.status(200).json(note)
     }catch(error){
-        res.status(400).json({erro: error.message})
+        return res.status(400).json({erro: error.message})
     }
 }
 
@@ -19,47 +19,48 @@ const addNote = async(req,res) => {
 const getAllNotes = async(req, res) => {
     const notes = await Note.find({}).sort({createdAt: -1})   
     if(!notes){
-        res.status(404).json({mssg: "there is not any note"})
+        return res.status(404).json({mssg: "there is not any note"})
     }
-    res.status(200).json(notes)
+    return res.status(200).json(notes)
 }
  
 //get a single Note request...
 const getSingleNote = async(req, res) => {
     const {id} = req.params
     if(!mongoos.Types.ObjectId.isValid(id)){
-        res.status(404).json({mssg: "there is not such a note"})
+        return res.status(404).json({mssg: "there is not such a note"})
     }
     const note = await Note.findById(id)
     if(!note){
-        res.status(404).json({mssg: "there is not such a note"})
+        return res.status(404).json({mssg: "there is not such a note"})
     }
-    res.status(200).json(note)
+    return res.status(200).json(note)
 }
 
 //delete a singlee note requst...
 const deleteNote = async(req, res) => {
 const {id} = req.params
 if(!mongoos.Types.ObjectId.isValid(id)){
-    res.status(404).json({mssg: "there is not such a note"})
+    return res.status(404).json({mssg: "there is not such a note"})
 }
 const note = await Note.findByIdAndDelete(id)
 if(!note){
-    res.status(404).json({mssg: "there is not such a note"})
+    return res.status(404).json({mssg: "there is not such a note"})
 }
-res.status(200).json(note)
+return res.status(200).json(note)
 }
 
 //update note request...
 const updateNote = async(req, res) => {
     const {id} = req.params
     if(!mongoos.Types.ObjectId.isValid(id)){
-        res.status(404).json({mssg: "there is not such a note"})
+        return res.status(404).json({mssg: "there is not such a note"})
     }
-    const note = await Note.findOneAndUpdate({_id: id},{...req.body})
+    const note = await Note.findOneAndUpdate({_id: id}, {
+        ...req.body} )
 
     if(!note){
-        res.status(400).json({mssg:"there is not such a note"})
+        return res.status(400).json({mssg:"there is not such a note"})
     }
 
 }
